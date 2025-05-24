@@ -65,5 +65,29 @@ def get_balance():
         flash(str(e), "error")
     return redirect('/')
 
+
+# Routes for sign up and login
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Here you would typically save the user to a database
+        flash(f"User {username} signed up successfully!", "success")
+        return redirect('/')
+    return render_template('signup.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # Here you would typically check the user credentials against a database
+        flash(f"User {username} logged in successfully!", "success")
+        return redirect('/')
+    return render_template('login.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
