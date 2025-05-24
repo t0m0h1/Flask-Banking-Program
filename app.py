@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash
-from bank import Bank
+from banking import Bank
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # Required for flashing messages
