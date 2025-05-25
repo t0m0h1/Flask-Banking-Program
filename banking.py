@@ -7,12 +7,14 @@ class Bank:
             raise ValueError("Account already exists.")
         self.accounts[account_number] = initial_balance
 
+
     def deposit(self, account_number, amount):
         if account_number not in self.accounts:
             raise ValueError("Account does not exist.")
         if amount <= 0:
             raise ValueError("Deposit amount must be positive.")
         self.accounts[account_number] += amount
+
 
     def withdraw(self, account_number, amount):
         if account_number not in self.accounts:
@@ -22,6 +24,7 @@ class Bank:
         if self.accounts[account_number] < amount:
             raise ValueError("Insufficient funds.")
         self.accounts[account_number] -= amount
+
 
     def get_balance(self, account_number):
         if account_number not in self.accounts:
@@ -38,3 +41,12 @@ class Bank:
         
         self.withdraw(from_account, amount)
         self.deposit(to_account, amount)
+
+
+    def get_all_accounts(self):
+        return self.accounts.copy()
+    
+    def delete_account(self, account_number):
+        if account_number not in self.accounts:
+            raise ValueError("Account does not exist. Please check the account number.")
+        del self.accounts[account_number]
