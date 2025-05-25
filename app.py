@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash
 from banking import Bank
+import sqlite3
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # Required for flashing messages
@@ -65,6 +66,28 @@ def get_balance():
         flash(str(e), "error")
     return redirect('/')
 
+@app.route('/get_all_accounts', methods=['GET'])
+def get_all_accounts():
+    try:
+        accounts = bank.get_all_accounts()
+        return render_template('accounts.html', accounts=accounts)
+    except Exception as e:
+        flash(str(e), "error")
+        return redirect('/')
+    
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    try:
+        account_number = request.form['account_number']
+        bank.delete_account(account_number)
+        flash(f"Account {account_number} deleted successfully!", "success")
+    except Exception as e:
+        flash(str(e), "error")
+    return redirect('/')
+
+
+
 
 # Routes for sign up and login
 @app.route('/signup', methods=['GET', 'POST'])
@@ -91,3 +114,11 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY,
+                    username TEXT NOT NULL,
+                    password TEXT NOT NULL
+                )''')
+    conn.commit()
